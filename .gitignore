@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.log
+bot.py.save
+bot.py.save2.py
