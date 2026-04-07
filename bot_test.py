@@ -1,14 +1,15 @@
 import discord
 import os
+import sys
 import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-if TOKEN == None:
+if TOKEN is None:
     print("Error: DISCORD_TOKEN is not set")
-    exit()
+    sys.exit(1)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -29,13 +30,13 @@ async def on_message(message):
         await message.channel.send("🏓 Pong! Bot is alive.")
 
     if message.content == "!hello":
-        await message.channel.send("こんにちは！" + message.author.name + "さん")
+        await message.channel.send(f"こんにちは！{message.author.name}さん")
 
     if message.content == "!time":
-        now = datetime.datetime.now()
-        await message.channel.send("現在時刻: " + str(now))
+        now = datetime.datetime.now(datetime.timezone.utc)
+        await message.channel.send(f"現在時刻 (UTC): {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
 
     if message.content == "!help":
-        await message.channel.send("使えるコマンド: !ping, !hello, !time, !help")
+        await message.channel.send(f"使えるコマンド: {', '.join(COMMANDS)}")
 
 client.run(TOKEN)
